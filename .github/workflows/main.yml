@@ -1,0 +1,113 @@
+// src/App.js
+import React, { useState } from 'react';
+import axios from 'axios';
+
+function App() {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [message, setMessage] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    axios.post('/api/login', { username, password })
+      .then(response => {
+        setMessage(response.data.message);
+      })
+      .catch(error => {
+        setMessage('Login failed: ' + error.response.data.message);
+      });
+  };
+
+  return (
+    <div style={{
+      backgroundColor: '#222',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: '100vh',
+    }}>
+      <div style={{
+        width: '600px',
+        height: '300px',
+        backgroundColor: '#111',
+        borderRadius: '5px',
+        display: 'flex',
+        boxShadow: '0 0 10px rgba(0, 0, 0, 0.5)',
+        border: '1px solid #880088',
+      }}>
+        <div style={{
+          width: '50%',
+          padding: '20px',
+        }}>
+          <h2 style={{
+            color: '#fff',
+            textAlign: 'left',
+          }}>Login</h2>
+          <form onSubmit={handleSubmit}>
+            <div style={{ marginBottom: '15px' }}>
+              <label style={{ color: '#fff', display: 'block', marginBottom: '5px' }}>Username</label>
+              <input
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                style={{
+                  width: '90%',
+                  padding: '8px',
+                  borderRadius: '3px',
+                  border: '1px solid #555',
+                  backgroundColor: '#333',
+                  color: '#fff',
+                }}
+              />
+            </div>
+            <div style={{ marginBottom: '20px' }}>
+              <label style={{ color: '#fff', display: 'block', marginBottom: '5px' }}>Password</label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                style={{
+                  width: '90%',
+                  padding: '8px',
+                  borderRadius: '3px',
+                  border: '1px solid #555',
+                  backgroundColor: '#333',
+                  color: '#fff',
+                }}
+              />
+            </div>
+            <button type="submit" style={{
+              backgroundColor: '#880088',
+              color: '#fff',
+              padding: '10px 20px',
+              border: 'none',
+              borderRadius: '3px',
+              cursor: 'pointer',
+            }}>Login</button>
+          </form>
+          <p style={{ color: '#fff', marginTop: '10px', fontSize: '0.8em' }}>
+            Don't have an account? <a href="#" style={{ color: '#880088' }}>Sign Up</a>
+          </p>
+          {message && <p style={{ color: '#fff' }}>{message}</p>}
+        </div>
+        <div style={{
+          width: '50%',
+          backgroundColor: '#880088',
+          padding: '20px',
+          color: '#fff',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          textAlign: 'center',
+        }}>
+          <h2>WELCOME BACK!</h2>
+          <p style={{ fontSize: '0.9em' }}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Deleniti, rem?</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default App;
+
